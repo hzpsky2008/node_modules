@@ -5,14 +5,15 @@
     
 var srcD;
 var DataF = {};
+var path = require("path");
+
 
 !function(){
     console.log("初始化 Data Factory!\n读取 data_factory_config.json");
 
 
-    var rootPath = _dirname;
-    var config = require(rootPath + "data_factory_config");
-    var dataSrc = _dirname + "data_config";// 默认 data 数据文件配置目录
+    var rootPath = path.resolve(__dirname,"../../");
+    var config = require(rootPath + "/data_factory_config");
     var dataSrcF = "./";
 
     if(!config){
@@ -22,7 +23,7 @@ var DataF = {};
             dataSrcF = config["dataSrcFolder"];
         }
     }
-
+    dataSrcF = path.resolve(rootPath,dataSrcF);
     srcD = config["dataSrcs"];
     for(var indexName in srcD){
         var data = srcD[indexName];
@@ -30,16 +31,22 @@ var DataF = {};
             continue;
         }
         if(!/\//g.test(data)){
-            data = dataSrcF + data;
+            data = dataSrcF + "/" + data;
         }
 
         console.log("正在装载 " + indexName);
-        var srcData = require(data);
         if(DataF[indexName]){
             throw new Error("存在相同key的数据模块：" + indexName);
             return false;
         }
-        DataF[indexName] = srcData;
+        var srcData = undefined;
+        try{
+             srcData = require(data);
+            DataF[indexName] = srcData;
+        }catch(e){
+            console.log("没有找到数据模块 " + indexName + " : " + data);
+        }
+
     }
     console.log("初始化 Data Factory 完毕!");
 }();
@@ -47,4 +54,6 @@ var DataF = {};
 function getDataSrc(dataName){
     return DataF[dataName];
 }
-module.exports = getDataSrc;
+module.exports = {
+    "get":getDataSrc
+};
