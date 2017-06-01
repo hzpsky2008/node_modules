@@ -1,0 +1,23 @@
+{
+  "name": "sky-data-factory",
+  "version": "1.0.1",
+  "description": "test",
+  "main": "DataFactory.js",
+  "scripts": {
+    "test": "require"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hzpsky2008/sky-data-factory.git"
+  },
+  "keywords": [
+    "data",
+    "factory"
+  ],
+  "author": "hzp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hzpsky2008/sky-data-factory/issues"
+  },
+  "homepage": "https://github.com/hzpsky2008/sky-data-factory#readme"
+}
